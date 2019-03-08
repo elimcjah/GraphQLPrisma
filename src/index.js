@@ -7,6 +7,8 @@ import Query from './resolvers/Query';
 import Subscription from './resolvers/Subscription';
 import User from './resolvers/User';
 
+import './prisma';
+
 const pubSub = new PubSub();
 
 const server = new GraphQLServer({
