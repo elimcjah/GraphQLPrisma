@@ -28,25 +28,28 @@ const createPostForUser = async (authorId, data) => {
                     }}}},
             `{ author { id name email posts { id title published } } }`
         );
-
-        console.log('post.author === ', post.author.id);
-        return post.author.id;
+        return post.author;
     } catch (e) {
         throw new Error(`createPostForUser ${e}`);
     }
 };
 
-
-createPostForUser('cjszcduzk01v60852wh7adro2', {
-    title: '6:21pm Friday',
-    body: '6:21pm Friday',
-    published: true
-}).then((data) => {
-    console.log(JSON.stringify(data, undefined, 2));
-});
+// createPostForUser('cjszcduzk01v60852wh7adro2', {
+//     title: '6:21pm Friday',
+//     body: '6:21pm Friday',
+//     published: true
+// }).then((data) => {
+//     console.log(JSON.stringify(data, undefined, 2));
+// }).catch((error) => {
+//     console.log('createPostForUser Error ', error.message)
+// });
 
 const updatePostForUser = async (postId, data) => {
     try {
+        const postExists = await prisma.exists.Post({id: postId});
+        if(!postExists) {
+            throw new Error(`Post with id of ${postId} not found.`)
+        }
         const post = await prisma.mutation.updatePost({
            data: {
                ...data
@@ -54,34 +57,19 @@ const updatePostForUser = async (postId, data) => {
             where: {
                id: postId
             }
-        }, `{ author { id }}`);
-        const user = await prisma.query.user({
-            where: {
-                id: post.author.id
-            }
-        }, '{ id name email posts { id title body published }}');
-        return user;
-    } catch (e) {
-        throw new Error(`updatePostForUser ${e}`)
+        }, `{ id author { id name email posts { id title published }}}`);
+        return post.author;
+    } catch (error) {
+        throw new Error(`updatePostForUser ${error}`)
     }
 };
 
-// prisma.exists.Comment({
-//     id: 'cjszc6icw01rx0852h19ucaoj',
-//     text: '2nd Comment',
-//     author: {
-//         id: 'cjsz6hlw500ux08521sul7u2j'
-//     }
-// }).then((exists) => {
-//     console.log(exists);
-// }).catch((e) => {
-//     throw new Error(`prisma.exists.Comment ${e}`)
-// });
-
-// updatePostForUser('cjsz6x7bh00ys08526vtdvpel', {
-//     title: '253 Friday',
-//     body: '253 Friday',
+// updatePostForUser('cjt4l34mp00yt0834aqr8wi7x', {
+//     title: '1055 Monday',
+//     body: '1055 Monday',
 //     published: true
 // }).then((data) => {
 //     console.log(JSON.stringify(data, undefined, 2));
+// }).catch((error) => {
+//     throw new Error(`updatePostForUser ${error}`);
 // });
