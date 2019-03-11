@@ -64,7 +64,6 @@ const updatePostForUser = async (postId, data) => {
     } catch (e) {
         throw new Error(`updatePostForUser ${e}`)
     }
-
 };
 
 // prisma.exists.Comment({
