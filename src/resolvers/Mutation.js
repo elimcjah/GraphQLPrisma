@@ -48,20 +48,33 @@ const Mutation = {
         }
         return post;
     },
-    createUser(parent, args, { db }, info) {
+    async createUser(parent, args, { prisma }, info) {
+        try {
+            const emailTaken = await prisma.exists.User({email: args.user.email});
 
-        const emailTaken = db.users.some((user) => user.email === args.user.email);
-
-        if(emailTaken) {
-            throw new Error(`${args.user.email} is already registered.`)
+            if(emailTaken) {
+                throw new Error(`${args.user.email} is already registered.`)
+            }
+            return await prisma.mutation.createUser({ data: args.user }, info);
+        } catch(error) {
+            throw new Error(error);
         }
-        const user = {
-            id: uuidv4(),
-            ...args.user
-        };
 
-        db.users.push(user);
-        return user;
+
+        // const emailTaken = db.users.some((user) => user.email === args.user.email);
+        //
+        // if(emailTaken) {
+        //     throw new Error(`${args.user.email} is already registered.`)
+        // }
+        // const user = {
+        //     id: uuidv4(),
+        //     ...args.user
+        // };
+        //
+        // db.users.push(user);
+        // return user;
+
+
     },
     deleteComment(parnet, args, { db, pubSub }, info){
         const commentIndex = db.comments.findIndex((comment) => comment.id === args.id);

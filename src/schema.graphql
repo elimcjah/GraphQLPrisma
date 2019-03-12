@@ -71,7 +71,6 @@ input CreatePostInput {
 }
 
 input CreateUserInput {
-    age: Int
     email: String!
     name: String!
 }
@@ -87,7 +86,6 @@ input UpdatePostInput {
 }
 
 input UpdateUserInput {
-    age: Int
     email: String
     name: String
 }
