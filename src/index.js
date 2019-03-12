@@ -3,11 +3,11 @@ import db from './db';
 import Comment from './resolvers/Comment';
 import Mutation from './resolvers/Mutation';
 import Post from './resolvers/Post';
+import prisma from './prisma';
 import Query from './resolvers/Query';
 import Subscription from './resolvers/Subscription';
 import User from './resolvers/User';
 
-import './prisma';
 
 const pubSub = new PubSub();
 
@@ -23,7 +23,8 @@ const server = new GraphQLServer({
   },
   context: {
     db,
-    pubSub
+    pubSub,
+    prisma
   }
 });
 
