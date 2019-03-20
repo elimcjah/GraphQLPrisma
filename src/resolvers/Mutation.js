@@ -218,5 +218,4 @@ const Mutation = {
         return user;
     },
 };
-
 export { Mutation as default};
