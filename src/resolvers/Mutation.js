@@ -60,7 +60,6 @@ const Mutation = {
             throw new Error(error);
         }
 
-
         // const emailTaken = db.users.some((user) => user.email === args.user.email);
         //
         // if(emailTaken) {
