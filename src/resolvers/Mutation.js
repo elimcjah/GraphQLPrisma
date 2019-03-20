@@ -59,7 +59,6 @@ const Mutation = {
         } catch(error) {
             throw new Error(error);
         }
-
         // const emailTaken = db.users.some((user) => user.email === args.user.email);
         //
         // if(emailTaken) {
@@ -72,8 +71,6 @@ const Mutation = {
         //
         // db.users.push(user);
         // return user;
-
-
     },
     deleteComment(parnet, args, { db, pubSub }, info){
         const commentIndex = db.comments.findIndex((comment) => comment.id === args.id);
